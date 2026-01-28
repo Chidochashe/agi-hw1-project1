@@ -7,6 +7,11 @@ import './App.css';
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
+// Critical fix #1: Validate API key at startup
+if (!API_KEY) {
+  console.error('Missing VITE_WEATHER_API_KEY environment variable. Add it to your .env file.');
+}
+
 function App() {
   const [city, setCity] = useState('London');
   const [weather, setWeather] = useState(null);
@@ -17,17 +22,32 @@ function App() {
   useEffect(() => {
     if (!city) return;
 
+    // Critical fix #1: Don't fetch if API key is missing
+    if (!API_KEY) {
+      setError('API key is missing. Please add VITE_WEATHER_API_KEY to your .env file.');
+      return;
+    }
+
     const fetchWeather = async () => {
       setLoading(true);
       setError(null);
 
       try {
+        // Fix: URL encode city name for cities with spaces/special chars
+        const encodedCity = encodeURIComponent(city);
+
         const weatherRes = await fetch(
-          `${BASE_URL}/weather?q=${city}&appid=${API_KEY}&units=metric`
+          `${BASE_URL}/weather?q=${encodedCity}&appid=${API_KEY}&units=metric`
         );
 
         if (!weatherRes.ok) {
-          throw new Error('City not found');
+          if (weatherRes.status === 404) {
+            throw new Error(`City "${city}" not found. Please check the spelling.`);
+          } else if (weatherRes.status === 401) {
+            throw new Error('API key is invalid or expired.');
+          } else {
+            throw new Error(`Failed to fetch weather data (${weatherRes.status})`);
+          }
         }
 
         const weatherData = await weatherRes.json();
@@ -42,8 +62,14 @@ function App() {
         });
 
         const forecastRes = await fetch(
-          `${BASE_URL}/forecast?q=${city}&appid=${API_KEY}&units=metric`
+          `${BASE_URL}/forecast?q=${encodedCity}&appid=${API_KEY}&units=metric`
         );
+
+        // Critical fix #2: Check forecast response for errors
+        if (!forecastRes.ok) {
+          throw new Error('Failed to fetch forecast data');
+        }
+
         const forecastData = await forecastRes.json();
 
         const dailyForecast = forecastData.list
