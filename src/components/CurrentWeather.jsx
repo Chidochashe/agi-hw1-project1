@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 function CurrentWeather({ weather }) {
   if (!weather) return null;
 
@@ -18,5 +20,16 @@ function CurrentWeather({ weather }) {
     </div>
   );
 }
+
+CurrentWeather.propTypes = {
+  weather: PropTypes.shape({
+    city: PropTypes.string.isRequired,
+    temp: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    humidity: PropTypes.number.isRequired,
+    wind: PropTypes.number.isRequired,
+  }),
+};
 
 export default CurrentWeather;

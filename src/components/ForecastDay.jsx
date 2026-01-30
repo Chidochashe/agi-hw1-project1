@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 function ForecastDay({ day }) {
   const iconUrl = `https://openweathermap.org/img/wn/${day.icon}@2x.png`;
 
@@ -10,5 +12,15 @@ function ForecastDay({ day }) {
     </div>
   );
 }
+
+ForecastDay.propTypes = {
+  day: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    tempHigh: PropTypes.number.isRequired,
+    tempLow: PropTypes.number.isRequired,
+    icon: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default ForecastDay;
