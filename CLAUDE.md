@@ -15,6 +15,22 @@ npm run build        # Production build
 npm run preview      # Preview production build
 ```
 
+## GitHub
+
+Repository: https://github.com/Chidochashe/agi-hw1-project1
+
+```bash
+~/bin/gh repo view --web    # Open repo in browser
+~/bin/gh pr create          # Create pull request
+```
+
+## Code Quality Patterns
+
+- PropTypes on all components for runtime validation
+- AbortController in useEffect for async race conditions
+- ErrorBoundary wraps App for graceful error handling
+- aria-label on form inputs for accessibility
+
 ## Architecture
 
 **State Management**: All state lives in `App.jsx` - child components are presentational and receive data via props.
