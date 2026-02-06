@@ -100,13 +100,13 @@ function App() {
           }));
 
         setForecast(dailyForecast);
+        setLoading(false);
       } catch (err) {
-        // Don't set error if request was aborted (user searched again)
+        // Don't update state if request was aborted (user searched again)
         if (err.name === 'AbortError') return;
         setError(err.message);
         setWeather(null);
         setForecast(null);
-      } finally {
         setLoading(false);
       }
     };

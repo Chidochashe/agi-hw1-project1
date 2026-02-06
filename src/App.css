@@ -143,3 +143,36 @@ h1 {
   background: rgba(255, 0, 0, 0.2);
   border-radius: 8px;
 }
+
+.error-boundary {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.error-boundary h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.error-boundary p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.error-boundary button {
+  padding: 0.75rem 1.5rem;
+  background: #4c51bf;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.error-boundary button:hover {
+  background: #434190;
+}
